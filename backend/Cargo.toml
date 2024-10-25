@@ -1,0 +1,9 @@
+[workspace]
+members = [ "controller","main", "models", "persistence", "services", "utils"]
+resolver = "2"
+
+[workspace.dependencies]
+
+# - logging dependencies
+log = "0.4.20"
+log4rs = "1.2.0"

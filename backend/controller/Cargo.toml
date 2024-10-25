@@ -1,0 +1,37 @@
+[package]
+name = "controller"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web="4.8.0"
+base64="0.21.4"
+dotenv = "0.15.0"
+
+# - for cookies
+rand_core = "0.6.4"
+rand_chacha = "0.3.1"
+rand = "0.8.5"
+
+# - log
+log = "0.4.20"
+log4rs = "1.2.0"
+
+# - local dependencies
+persistence = { path = "../persistence" }
+models = { path = "../models" }
+services = { path = "../services" }
+utils = { path = "../utils" }
+
+
+# - Database dependencies 
+postgres = {version = "0.19.7"}
+actix-rt = "2.2.0"
+sqlx = { version = "0.5", features = ["postgres", "runtime-actix-rustls"] }
+
+
+# - read the json
+serde_json = "1.0.117"
+

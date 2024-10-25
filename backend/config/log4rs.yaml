@@ -1,0 +1,20 @@
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} | {({l}):5.5} | {f}:{L} — {m}{n}"
+  log_file:
+    kind: file
+    path: log/cloutfit.log
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} | {({l}):5.5} | {f}:{L} — {m}{n}"
+root:
+  level: info
+  appenders:
+    - log_file
+
+#loggers:
+#  step:
+#    level: error
+#    appenders: 
+#      - log_file
