@@ -28,6 +28,7 @@ export default function TextDetail({item}:any) {
     );
 }
 
+// -- Style --
 const styles = StyleSheet.create({
     containerRight: {
       padding:20,
@@ -54,6 +55,6 @@ const styles = StyleSheet.create({
       color: '#666',
       marginVertical: 2,
     },
-  });
+});
   
   

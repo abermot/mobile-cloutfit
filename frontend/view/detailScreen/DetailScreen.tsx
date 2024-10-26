@@ -17,8 +17,8 @@ export default function DetailScreenMobile() {
   const { item } = params as { item: Item };
   const navigation = useNavigation(); 
   const [isLiked, setIsLiked] = useState(false);
-  const [isUnauthorized, setIsUnauthorized] = React.useState(false); // state for manage authoritation
-  const [iconName, setIconName] = React.useState(''); // state for manage authoritation
+  const [isUnauthorized, setIsUnauthorized] = React.useState(false);
+  const [iconName, setIconName] = React.useState('');
 
 
 
@@ -30,61 +30,15 @@ export default function DetailScreenMobile() {
     );
   }
 
+
+
   useEffect(() => {
-    const checkIsLike = async (item: Item) => {
-      try {
-        let response = await axios.get(`${BASE_URL}/details/isliked/${item.id}`,  {
-          headers: {
-              'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
-          },
-        },);
-        if (response.status === 200) {
-          setIsUnauthorized(false);
-          setIsLiked(response.data);
-        } else {
-          setIsUnauthorized(true);
-        }
-      } catch (error: any) {
-        setIsUnauthorized(true);
-      }
-    };
-    checkIsLike(item);
+    checkIsLike(item,token);
   }, [item]);
 
   useEffect(() => {
     setIconName(isLiked ? 'heart' : 'heart-outline');
   }, [isLiked]);
-
-  const handlePress = async () => {
-    if (isLiked) {
-      // Eliminar de favoritos
-      try {
-        await axios.delete(`${BASE_URL}/remove/like/${item.id}`, {
-          headers: {
-              'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
-          },
-          },);
-        setIsLiked(false);
-      } catch (error) {
-        console.error('Error deleting favorite:', error);
-      }
-    } else {
-      // Guardar en favoritos
-      try {
-        console.log(item.id)
-        await axios.post(`${BASE_URL}/save/like/${item.id}`,  {item: item}, {
-          headers: {
-              'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
-          },
-          },);
-        setIsLiked(true);
-      } catch (error) {
-
-        console.log('Error aqui: ' + error);
-      }
-    }
-  };
-  
 
   return (
     <View style = {{flex:1, flexDirection: 'column', backgroundColor: 'white'}}>
@@ -103,7 +57,7 @@ export default function DetailScreenMobile() {
       />
       <View style={styles.smallContainer}>
           {!isUnauthorized ? (
-            <Pressable onPress={() => handlePress()}>
+            <Pressable onPress={() => handlePress(isLiked, item, token, setIsLiked)}>
               <Icon name={iconName} size={24} color="black" />
             </Pressable>
           ) : null}
@@ -117,6 +71,52 @@ export default function DetailScreenMobile() {
   );
 };
 
+// -- API petitions --
+
+const handlePress = async (isLiked: boolean, item: Item, token: string, setIsLiked: React.Dispatch<React.SetStateAction<boolean>>) => {
+  if (isLiked) {
+    // Eliminar de favoritos
+    try {
+      await axios.delete(`${BASE_URL}/remove/like/${item.id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
+        },
+        },);
+      setIsLiked(false);
+    } catch (error) {
+      console.error('Error deleting favorite:', error);
+    }
+  } else {
+    // Guardar en favoritos
+    try {
+      console.log(item.id)
+      await axios.post(`${BASE_URL}/save/like/${item.id}`,  {item: item}, {
+        headers: {
+            'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
+        },
+        },);
+      setIsLiked(true);
+    } catch (error) {
+
+      console.log('Error aqui: ' + error);
+    }
+  }
+};
+
+async function checkIsLike(item: Item, token: string) {
+  try {
+    await axios.get(`${BASE_URL}/details/isliked/${item.id}`,  {
+      headers: {
+          'Authorization': `Bearer ${token}`,
+      },
+    },);
+  } catch (error) {
+    console.log('Error checking likes: ' + error);
+    throw error;
+  }
+};
+
+// -- Style --
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -127,15 +127,6 @@ const styles = StyleSheet.create({
     padding: 1,
     backgroundColor: 'white',
     flex: 3,
-  },
-  containerRight: {
-    padding:20,
-    backgroundColor: 'white',
-    flex:1,
-  },
-  textStyle: {
-    padding:20,
-    color: 'black',
   },
   smallContainer: {
     padding:15,

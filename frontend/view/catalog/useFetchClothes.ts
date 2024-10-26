@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/utils';
 import { Item } from '../../utils/modals/interfaces';
-import { Platform } from 'react-native';
 
 
 export const useFetchClothes = (gender: string, category: string) => {
@@ -16,15 +15,9 @@ export const useFetchClothes = (gender: string, category: string) => {
     try {
       const currentPage = resetPage ? 1 : page;
       let response;
-      if (Platform.OS == 'web') {
-        console.log("cual es l page -> " + page)
-        response = await axios.get(`${BASE_URL}/list_data/${gender}/${category}/${currentPage}`,  {  withCredentials: true});
-      } else {
-        console.log(`${BASE_URL}/mobile/list_data/${gender}/${category}/${currentPage}`)
-        response = await axios.get(`${BASE_URL}/mobile/list_data/${gender}/${category}/${currentPage}`,  {  withCredentials: true});
-      }
+      console.log(`${BASE_URL}/mobile/list_data/${gender}/${category}/${currentPage}`)
+      response = await axios.get(`${BASE_URL}/mobile/list_data/${gender}/${category}/${currentPage}`,  {  withCredentials: true});
     
-      
       setData(prevData => resetPage ? response.data : [...prevData, ...response.data]);
       setPage(prevPage => prevPage + 1);
       
@@ -35,5 +28,5 @@ export const useFetchClothes = (gender: string, category: string) => {
     }
   }, [loading, gender, category, page]);
 
-  return { data, fetchClothes, setData, setPage };
+  return { data, fetchClothes, setData};
 };

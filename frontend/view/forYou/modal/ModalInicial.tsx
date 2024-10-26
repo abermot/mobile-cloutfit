@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Modal, Platform } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal} from 'react-native';
 
 interface ModalInicialProps {
   isVisible: boolean;
@@ -92,8 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
-    width: Platform.OS == 'web' ? '50%' : '90%',
-    //maxWidth: 400,
+    width: '90%',
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,

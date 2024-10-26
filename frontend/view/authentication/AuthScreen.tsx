@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, Platform, ImageBackground, Modal} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ImageBackground, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TextInputComponent} from '../components/TextInputComponent';
 import { TextInput } from 'react-native-paper';
@@ -221,6 +221,8 @@ const AuthScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 export default AuthScreen;
 
 
+// -- Style --
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -228,8 +230,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageLogo: {
-    width: Platform.OS == 'web' ? 400 : 323,
-    height: Platform.OS == 'web' ? 100 : 86,
+    width: 323,
+    height: 86,
     marginBottom: 20,
   },
   text: {
@@ -251,7 +253,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 30,
     width: '100%',
-    
   },
   formContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.85)',
@@ -291,13 +292,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
-
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 30,
-  
   },
   modalView: {
     width: '100%',
@@ -321,7 +320,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
-
   modalTextSmall: {
     marginBottom: 15,
   },

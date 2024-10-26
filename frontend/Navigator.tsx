@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import StartScreenMobile from './view/start/StartScreenMobile';
+import StartScreenMobile from './view/start/StartScreen';
 import AuthScreen from './view/authentication/AuthScreen'
 import DetailScreen from './view/detailScreen/DetailScreen'
 import ForYouScreen from './view/forYou/ForYouScreen';
@@ -16,13 +16,8 @@ import { useAuth } from './view/authentication/AuthContext';
 import AccountScreen from './view/profile/AccountScreen';
 import ShowRecommendations from './view/forYou/showrecommendations/ShowRecommendations';
 
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-
-
-
 
 const AuthenticatedTabs = () => {
     return (
@@ -55,7 +50,6 @@ const AuthenticatedTabs = () => {
     );
 };
 
-  
 
 const TabNavigatior = () => {
     return (
