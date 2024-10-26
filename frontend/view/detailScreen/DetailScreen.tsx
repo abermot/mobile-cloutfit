@@ -30,10 +30,8 @@ export default function DetailScreenMobile() {
     );
   }
 
-
-
   useEffect(() => {
-    checkIsLike(item,token);
+    checkIsLike(item,token, setIsUnauthorized);
   }, [item]);
 
   useEffect(() => {
@@ -75,35 +73,33 @@ export default function DetailScreenMobile() {
 
 const handlePress = async (isLiked: boolean, item: Item, token: string, setIsLiked: React.Dispatch<React.SetStateAction<boolean>>) => {
   if (isLiked) {
-    // Eliminar de favoritos
-    try {
+    try { // delete from favorites
       await axios.delete(`${BASE_URL}/remove/like/${item.id}`, {
         headers: {
-            'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
+            'Authorization': `Bearer ${token}`,
         },
-        },);
+      },);
       setIsLiked(false);
     } catch (error) {
       console.error('Error deleting favorite:', error);
+      throw error;
     }
   } else {
-    // Guardar en favoritos
-    try {
-      console.log(item.id)
+    try { // save in favorites
       await axios.post(`${BASE_URL}/save/like/${item.id}`,  {item: item}, {
         headers: {
-            'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
+            'Authorization': `Bearer ${token}`,
         },
-        },);
+      },);
       setIsLiked(true);
     } catch (error) {
-
-      console.log('Error aqui: ' + error);
+      console.log('Error saving favorite:', error);
+      throw error;
     }
   }
 };
 
-async function checkIsLike(item: Item, token: string) {
+async function checkIsLike(item: Item, token: string, setIsUnauthorized: React.Dispatch<React.SetStateAction<boolean>>) {
   try {
     await axios.get(`${BASE_URL}/details/isliked/${item.id}`,  {
       headers: {
@@ -111,10 +107,24 @@ async function checkIsLike(item: Item, token: string) {
       },
     },);
   } catch (error) {
-    console.log('Error checking likes: ' + error);
-    throw error;
+    
+    if (axios.isAxiosError(error)) {
+      if (error.response && error.response.status === 401) {
+        // Unregistered user, this function only applies to registered users
+        setIsUnauthorized(true)
+        return false;
+      } else {
+        console.error('Error checking likes: ' + error.message);
+        throw error;
+      }
+    } else {
+      // if the error is not from Axios, we launch it
+      console.error('Error: ' + (error as Error).message);
+      throw error;
+    }
   }
 };
+
 
 // -- Style --
 const styles = StyleSheet.create({
