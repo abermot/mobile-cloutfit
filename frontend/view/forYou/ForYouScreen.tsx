@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions, StyleSheet, FlatList, Pressable, Image, Platform} from 'react-native';
+import { View, Text, useWindowDimensions, StyleSheet, FlatList, Pressable, Image, } from 'react-native';
 import { useCallback, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Item, Recommendations } from '../../utils/modals/interfaces';
@@ -13,7 +13,8 @@ import { useAuth } from '../authentication/AuthContext';
 
 
 const calcNumColumns = (width: number) => {
-  const itemWidth = 100; 
+  const itemWidth = 0.33333 * width; 
+  console.log(Math.floor(width / itemWidth))
   return Math.floor(width / itemWidth);
 };
 
@@ -140,7 +141,7 @@ export const ForYouScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     <View style={styles.itemBoxStyle}>
       <View>
         <Pressable onPress={() => handleOnPress(item)}>
-          <Image source={{uri: item.photos_urls[0]}} style={[styles.imagesView, {minWidth: '30%', width: (width - (width*0.01))/numColumns}]}/>
+          <Image source={{uri: item.photos_urls[0]}} style={[styles.imagesView]} resizeMode="cover"/>
         </Pressable>
         <Pressable onPress={() => deleteRecommendation(item.id)} style={styles.removeIcon}>
           <Icon name="close" size={24} color="black" />
@@ -154,7 +155,7 @@ export const ForYouScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   ), []);
     
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {isLoading ? (
         loadingAlg ? (
           <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: 'white'}}>
@@ -184,23 +185,27 @@ export const ForYouScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 </Pressable>
               </View>
             </View>
+            <View style={{ flex: 1, margin: 0, padding: 0 }}>
             <Text style={styles.historyTitle}>Historial de recomendaciones</Text>
             {noDataMessage ? (
               <Text style={styles.noHistoryText}>{noDataMessage}</Text>
             ) : (
-              <FlatList
-                style={styles.flatListStyle}
-                data={history}
-                renderItem={renderItem}
-                numColumns={numColumns}
-                key={numColumns}
-                keyExtractor={item => `${item.id}_${item.name}`}
-                onEndReached={() => fetchHistoryCallback()}
-                onEndReachedThreshold={0.5}
-                maxToRenderPerBatch={4}
-                extraData={history} 
-              />
+                
+                <FlatList
+                  style={styles.flatListStyle}
+                  data={history}
+                  renderItem={renderItem}
+                  numColumns={numColumns}
+                  key={numColumns}
+                  keyExtractor={item => `${item.id}_${item.name}`}
+                  onEndReached={() => fetchHistoryCallback()}
+                  onEndReachedThreshold={0.5}
+                  maxToRenderPerBatch={6}
+                  extraData={history} 
+                />
+              
             )}
+            </View>
             {isInitialModal ? (
               <ModalInicial
                 isVisible={isInitialModal}
@@ -227,7 +232,7 @@ export const ForYouScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           </>
         )
       )}
-    </SafeAreaView>
+    </View>
   );
   
 };
@@ -303,15 +308,15 @@ const hasUserTaggedClothing = async (token: string) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop:'15%',
     flex: 1,
-    zIndex: 0,
     backgroundColor: 'white',
   },
   imagesView: {
-    padding: 0.5,
-    height: Platform.OS == 'web' ? 400: 200,
+    width: '100%',
+    minWidth:'33.333%',
+    height: 205,
     backgroundColor: 'white',
-    maxHeight:'100%',
   },
 
   actionButtonsContainer: {
@@ -344,7 +349,8 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   itemBoxStyle: {
-    padding: 0.5,
+    //borderRightWidth:1,
+    borderRightColor:'white',
   },
 
   historyTitle: {
@@ -363,12 +369,12 @@ const styles = StyleSheet.create({
 
   textStyle: {
     fontSize: 12,
-    padding: 10,
-    marginLeft: 3,
+    padding: 5,
+    marginLeft: 1,
   },
   removeIcon: {
     position: 'absolute',
-    top: 5,
+    top: 0,
     right: 5,
     zIndex: 1,
     padding: 5,
@@ -378,10 +384,9 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     paddingTop: '1%',
     flexDirection: 'column',
-
   },
   flatListStyle: {
+    flex:1,
     width: '100%',
-    zIndex: 0,
   },
 });

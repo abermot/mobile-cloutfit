@@ -11,7 +11,7 @@ import LoadingIndicator from '../../utils/LoadingIndicator';
 export const ListItemComponent = ({title, iconName, onPress}:any) => {
   return(
     <Pressable onPress={onPress}>
-      <ListItem bottomDivider  >
+      <ListItem bottomDivider>
         <Icon name={iconName} type="material-community" color="grey" />
         <ListItem.Content>
           <ListItem.Title>{title}</ListItem.Title>
@@ -34,7 +34,7 @@ export default function AccountScreen(){
       try {
         const response = await axios.get(`${BASE_URL}/user_data`, {
           headers: {
-            'Authorization': `Bearer ${token}`,// obtenemos el token del contexto
+            'Authorization': `Bearer ${token}`,
           },
         },);
         if (response.status === 200) {
@@ -146,8 +146,8 @@ export default function AccountScreen(){
 
 
   return(
-    <SafeAreaView style={{flexDirection: 'column', flex:1, backgroundColor:'white'}}>
-      
+    <SafeAreaView style={{flexDirection: 'column', flex:1}}>
+    <View style={{flex: 1, backgroundColor:'#F0F0F0'}} >
       <View style={{flex: 1, alignItems:'center', justifyContent:'center'}} >
         <Avatar
           size={64}
@@ -157,11 +157,20 @@ export default function AccountScreen(){
         />
         <Text style={{paddingTop:20}}>Hola, {userData.charAt(0).toUpperCase()+ userData.slice(1)}</Text>
       </View>
-      <View style={{flex: 2,}} >
-        <ListItemComponent title = "Borrar cuenta" iconName= "trash-can-outline" onPress={handleDeleteAccount}/>
-        <ListItemComponent title = "Salir" iconName= "exit-to-app" onPress={handleLogout}/>
+      <View style={{ flex: 2}}>
+        <View>
+          <ListItemComponent title="Editar perfil" iconName="card-account-details-outline" onPress={handleDeleteAccount} />
+          <ListItemComponent title="Cambiar contraseña" iconName="lock-outline" onPress={handleLogout} />
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <ListItemComponent title="Danos tu opinión" iconName="draw" onPress={handleLogout} />
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <ListItemComponent title="Borrar cuenta" iconName="trash-can-outline" onPress={handleDeleteAccount} />
+          <ListItemComponent title="Salir" iconName="exit-to-app" onPress={handleLogout} />
+        </View>
       </View>
-  
+      </View>
     </SafeAreaView>
   );
   }

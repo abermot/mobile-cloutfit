@@ -11,7 +11,7 @@ import { BASE_URL } from '../../utils/utils';
 
 
 const calcNumColumns = (width: number) => {
-  const itemWidth = 100; 
+  const itemWidth = 0.33333 * width; 
   return Math.floor(width / itemWidth);
 };
 
@@ -72,7 +72,7 @@ const FavoritesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     <View style={styles.itemBoxStyle}>
       <View>
         <Pressable onPress={() => handleItemPress(item)}>
-          <Image source={{uri: item.photos_urls[0]}} style={[styles.imagesView, {minWidth: '30%',  width: (width - (width*0.01))/numColumns}]}/>
+          <Image source={{uri: item.photos_urls[0]}} style={styles.imagesView} resizeMode='cover'/>
         </Pressable>
         <Pressable onPress={() => handleRemoveItemCallback(item)} style={styles.removeIcon}>
           <Icon name="close" size={24} color="black" />
@@ -87,7 +87,7 @@ const FavoritesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {isLoading ? (
         <LoadingIndicator/>
       ) : (
@@ -119,7 +119,7 @@ const FavoritesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           )}
         </>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -162,15 +162,15 @@ const handleRemoveItem = async (item: Item, token: string) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop:'15%',
     flex: 1,
-    zIndex: 0,
     backgroundColor: 'white',
   },
   imagesView: {
-    padding: 0.5,
-    height: Platform.OS == 'web' ? 400: 200,
+    width: '100%',
+    minWidth:'33.333%',
+    height: 205,
     backgroundColor: 'white',
-    maxHeight:'100%',
   },
   containerText: {
     backgroundColor: '#f0f0f0', 
@@ -195,12 +195,13 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   itemBoxStyle: {
-    padding: 0.5,
+    //borderRightWidth:0.8,
+    borderRightColor:'white',
   },
   textStyle: {
     fontSize: 12,
-    padding: 10,
-    marginLeft: 3,
+    padding: 5,
+    marginLeft: 1,
   },
   removeIcon: {
     position: 'absolute',

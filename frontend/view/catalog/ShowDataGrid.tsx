@@ -8,7 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 
 
 const calcNumColumns = (width: number) => {
-  let itemWidth = 150; 
+  let itemWidth = 0.5 * width; 
   return Math.floor(width / itemWidth);
 };
 
@@ -27,7 +27,7 @@ const ShowDataGrid: React.FC<{ gender: string; category: string, navigation: any
       <View style={styles.itemBoxStyle}>
         <View>
           <Pressable onPress={() => onItemPress(item)}>
-            <Image source={{uri: item.photos_urls[0]}} style={[styles.itemStyle, {width: width/numColumns}]} resizeMode="cover"/>
+            <Image source={{uri: item.photos_urls[0]}} style={styles.imagesView} resizeMode="cover"/>
           </Pressable>
         </View>
         <View style={[styles.textView, {maxWidth: width/numColumns}]}>
@@ -94,12 +94,14 @@ const styles = StyleSheet.create({
     padding: 0.5,
     backgroundColor: 'white',
   },
-  itemStyle: {
-    height: windowHeight * 0.35,
+  imagesView: {
+    width: '100%',
+    minWidth:'50%',
+    height: windowHeight * 0.33,
   },
   textStyle: {
     fontSize: 12,
-    padding: 10,
-    marginLeft: 3,
+    padding: 5,
+    marginLeft: 1,
   },
 });
