@@ -1,4 +1,4 @@
-import { StyleSheet, Text, FlatList, ListRenderItem, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
 import * as React from 'react';
 
 

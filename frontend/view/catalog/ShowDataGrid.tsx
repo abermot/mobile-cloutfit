@@ -1,5 +1,5 @@
 import {StyleSheet, View, FlatList, Dimensions, useWindowDimensions, Image, Text, Pressable} from 'react-native';
-import * as React from 'react';
+import {useEffect, useState} from 'react';
 import { useFetchClothes } from './useFetchClothes';
 import { Item } from '../../utils/modals/interfaces';
 import { useCallback } from 'react';
@@ -13,9 +13,9 @@ const calcNumColumns = (width: number) => {
 };
 
 const ShowDataGrid: React.FC<{ gender: string; category: string, navigation: any }> = ({ gender, category, navigation }) => {
-  const { data, fetchClothes, setData } = useFetchClothes(gender, category);
+  const { data, fetchClothes, setData, setPage } = useFetchClothes(gender, category);
   const {width} = useWindowDimensions();
-  const [numColumns, setNumColumns] = React.useState(calcNumColumns(width));
+  const [numColumns, setNumColumns] = useState(calcNumColumns(width));
   
 
   const onItemPress = (item : any) => {
@@ -38,18 +38,19 @@ const ShowDataGrid: React.FC<{ gender: string; category: string, navigation: any
     );
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setNumColumns(calcNumColumns(width));
   }, [width]);
 
-  React.useEffect(() => {
-    setData([...data]);
-    fetchClothes(false);
+  useEffect(() => {
+    setData([]);
+    setPage(1);
+    fetchClothes(true);
   }, [gender, category]);
-
-
-    return (
-      <View style={styles.container}>
+  
+  
+  return (
+    <View style={styles.container}>
         <FlatList
           style = {styles.flatlistStyle}
           data={data}

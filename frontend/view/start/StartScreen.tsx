@@ -16,6 +16,7 @@ export default function StartScreen({navigation}:any) {
   AuthContext = isAuthenticated;
 
   const handleGetValueGender = (value: string) => {
+      console.log(value)
       setGenderValue(value); 
       setCategoryValue('all'); 
       navigation.navigate('Start', { category_route: value });

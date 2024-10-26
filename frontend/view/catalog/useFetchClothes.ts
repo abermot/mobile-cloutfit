@@ -28,5 +28,5 @@ export const useFetchClothes = (gender: string, category: string) => {
     }
   }, [loading, gender, category, page]);
 
-  return { data, fetchClothes, setData};
+  return { data, fetchClothes, setData, setPage};
 };
